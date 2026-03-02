@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: Activity Lottery API
+  version: 1.0.0
+  description: 活動轉盤抽獎相關 API
+
+servers:
+  - url: https://api.example.com
+
+paths:
+  /activity/detail:
+    get:
+      summary: 取得活動詳細資訊
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityDetailResponse"
+
+  /rewards:
+    get:
+      summary: 取得全部獎項
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reward"
+
+  /activity/draw:
+    post:
+      summary: 進行抽獎
+      responses:
+        "200":
+          description: 抽獎結果
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrawResponse"
+
+components:
+  schemas:
+
+    ActivityDetailResponse:
+      type: object
+      properties:
+        barcode:
+          type: integer
+        activity:
+          $ref: "#/components/schemas/Activity"
+        requirement:
+          $ref: "#/components/schemas/Requirement"
+        redeemedScratchReward:
+          type: array
+          items:
+            $ref: "#/components/schemas/Reward"
+        voucherGroups:
+          type: array
+          items:
+            type: object
+        isValidPeriod:
+          type: boolean
+
+    Activity:
+      type: object
+      properties:
+        activityDetail:
+          type: string
+        activityDrawQualifications:
+          type: string
+        activityReceiveProgress:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceiveProgress"
+        activityOtherNotices:
+          type: array
+          items:
+            type: string
+        articlePeriod:
+          $ref: "#/components/schemas/Period"
+
+    ReceiveProgress:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: array
+          items:
+            type: string
+
+    Requirement:
+      type: object
+      properties:
+        articlePeriod:
+          $ref: "#/components/schemas/Period"
+        activityWay:
+          type: array
+          items:
+            type: string
+        activityEligibility:
+          type: array
+          items:
+            type: string
+        activityRewards:
+          $ref: "#/components/schemas/ActivityRewards"
+
+    ActivityRewards:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: array
+          items:
+            type: string
+        note:
+          type: string
+
+    Period:
+      type: object
+      properties:
+        startAt:
+          type: string
+          example: "2025/02/25"
+        endAt:
+          type: string
+          example: "2025/03/16"
+
+    Reward:
+      type: object
+      properties:
+        voucherGroupId:
+          type: string
+        thumbnailId:
+          type: string
+        displayTitle:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        stepsOfReceivingAward:
+          type: array
+          items:
+            $ref: "#/components/schemas/RewardStep"
+        note:
+          type: string
+        ctaLink:
+          type: string
+        thumbnailSet:
+          type: object
+
+    RewardStep:
+      type: object
+      properties:
+        title:
+          type: string
+        briefDescription:
+          type: string
+        button:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/Button"
+
+    Button:
+      type: object
+      properties:
+        displayText:
+          type: string
+        url:
+          type: string
+
+    DrawResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        redeemedVoucher:
+          type: array
+          items:
+            $ref: "#/components/schemas/Reward"
