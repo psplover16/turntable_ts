@@ -1,4 +1,6 @@
-export const redeemedReward = [
+import type { RedeemedReward } from '../types';
+
+export const redeemedReward: RedeemedReward = [
   {
     voucherGroupId: 'starnic001',
     thumbnailId: '',

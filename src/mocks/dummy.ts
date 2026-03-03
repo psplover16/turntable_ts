@@ -1,15 +1,17 @@
-import { getRedeemedRewardByRoute } from './activityRouteUtils.js';
+import type { RedeemedRewardItem } from './types';
+import { getRedeemedRewardByRoute } from './activityRouteUtils';
 const redeemedReward = await getRedeemedRewardByRoute();
+const firstRedeemedReward: RedeemedRewardItem | undefined = redeemedReward?.[0];
 /**
  * 呼叫APP後 由APP回傳網頁所需資訊
  */
 export const getWebConfigDummy = () => {
   return {
-    taskId: '138',
+    taskId: '138', // API需求的任務ID
     period: '11405', // 發票期數
     safeAreaTop: 56, // 裝置安全範圍（上）
     safeAreaBottom: 24, // 裝置安全範圍（下）
-    triggerFrom: 'checking',
+    triggerFrom: 'checking', // 埋點參數
   };
 };
 
@@ -68,7 +70,7 @@ export const getActivityDetailDummy = () => ({
       note: '*註：0050指「元大台灣50 ETF」，市值以2024/10/22收盤價舉例，獎金實際金額請見下方【活動細則】說明。',
     },
   },
-  redeemedScratchReward: [redeemedReward[0]],
+  redeemedScratchReward: firstRedeemedReward ? [firstRedeemedReward] : [],
   voucherGroups: [],
   isValidPeriod: true,
 });
@@ -77,7 +79,7 @@ export const drawDummy = () => {
   return {
     status: 1,
     message: '0',
-    redeemedVoucher: [redeemedReward[0]],
+    redeemedVoucher: firstRedeemedReward ? [firstRedeemedReward] : [],
   };
 };
 
