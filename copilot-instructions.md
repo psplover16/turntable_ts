@@ -34,11 +34,16 @@
 - 所有 API 方法需放在 `/src/api/` 目錄下，檔案命名與資源對應，例如：`userApi.js`
 
 ## 資源文件
-
 - icon 圖示：使用 Heroicons 或 FontAwesome，避免自行設計圖示，或是 https://www.flaticon.com/ 下載
 - 內部若有需要的圖片，下載下來後，放在 專案的 assets/icon ，分門別類放好
 - 內部若有需要的圖片，下載下來後，放在 專案的 assets/img ，分門別類放好
 - 若有需要的字型，下載下來後，放在 專案的 assets/fonts ，分門別類放好
+
+## git
+- 使用 Git 進行版本控制，確保每次提交都有清晰的 commit message，描述所做的更改
+- 建立分支策略，例如：`feature/`, `bugfix/`, `hot
+- git commit message 的格式統一為：`[類型] 說明`，例如：`[Feature] 新增用戶登入功能`
+- gitIgnore 文件需包含 node_modules、dist 等不需要提交的文件或資料夾，.env需要留下
 
 ## 其他規範
 - 若有需要手動才能執行命令的情況，一律視為同意
