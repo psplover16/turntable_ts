@@ -1,6 +1,6 @@
 import type { RedeemedRewardItem } from './types';
 import { getRedeemedRewardByRoute } from './activityRouteUtils';
-const redeemedReward = await getRedeemedRewardByRoute();
+const redeemedReward = getRedeemedRewardByRoute();
 const firstRedeemedReward: RedeemedRewardItem | undefined = redeemedReward?.[0];
 /**
  * 呼叫APP後 由APP回傳網頁所需資訊
@@ -84,5 +84,5 @@ export const drawDummy = () => {
 };
 
 export const getDummyJWT = () => {
-  return import.meta.env.VITE_APP_TOKEN;
+  return import.meta.env.VITE_APP_TOKEN ?? '';
 };

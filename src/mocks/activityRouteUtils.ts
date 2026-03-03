@@ -22,31 +22,28 @@ export function kebabToCamelCase(str: string): string {
 
 /**
  * 根據當前路由動態獲取對應活動的已兌換獎項資料
- * @returns {Promise<Array|undefined>} 對應活動的獎項資料，找不到則返回 undefined
+ * @returns {RedeemedReward|undefined} 對應活動的獎項資料，找不到則返回 undefined
  */
-export async function getRedeemedRewardByRoute(): Promise<RedeemedReward | undefined> {
+export function getRedeemedRewardByRoute(): RedeemedReward | undefined {
   if (typeof window !== 'undefined') {
     const currentPath = window.location.pathname;
     const routeName = getActivityNameFromPath(currentPath);
+
     if (routeName) {
       const camelCaseRouteName = kebabToCamelCase(routeName);
-      try {
-        // 使用 Vite 支援的動態導入格式
-        // 明確指定導入路徑模式，讓 Vite 能夠正確分析
-        const modules = import.meta.glob<{ redeemedReward?: RedeemedReward }>('./detail/*.ts');
-        const modulePath = `./detail/${camelCaseRouteName}.ts`;
+      const modules = import.meta.glob<{ redeemedReward?: RedeemedReward }>('./detail/*.ts', {
+        eager: true,
+      });
+      const modulePath = `./detail/${camelCaseRouteName}.ts`;
+      const module = modules[modulePath];
 
-        const moduleLoader = modules[modulePath];
-        if (moduleLoader) {
-          const module = await moduleLoader();
-          return module.redeemedReward || [];
-        }
-
-        return;
-      } catch (error) {
-        return;
+      if (module) {
+        return module.redeemedReward || [];
       }
+
+      return;
     }
   }
+
   return;
 }
